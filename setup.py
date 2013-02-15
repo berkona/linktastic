@@ -7,7 +7,7 @@ setup(
 	author_email='solipsis.dev@gmail.com',
 	py_modules=['linktastic'],
 	url="http://github.com/berkona/linktastic",
-	license='GNU GPL - See http://www.gnu.org/licenses/gpl.html',
+	license='MIT License - See http://opensource.org/licenses/MIT for details',
 	description='Truly platform-independent file linking',
 	long_description=open('README.txt').read(),
 )
