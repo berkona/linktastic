@@ -37,7 +37,7 @@ _symlinkRegex = re.compile('symbolic link created for .+ <<==>> .+')
 def _link_windows(src, dest):
 	subprocess.call(['cmd', '/C', 'mklink', '/H', dest, src], stdout=subprocess.PIPE)
 
-	stdout, stderr = subprocess.PIPE.communicate()
+	stdout, stderr = subprocess.communicate()
 
 	# TODO, find out what kind of messages Windows sends us from mklink
 	logger.info(stdout)
