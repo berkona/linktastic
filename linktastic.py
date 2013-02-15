@@ -22,35 +22,35 @@
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 import subprocess
-import logging
+from subprocess import CalledProcessError
 import os
-import re
-
-logging.basicConfig()
-logger = logging.getLogger(__name__)
-
-_hardlinkRegex = re.compile('Hardlink created for .+ <<==>> .+')
-_symlinkRegex = re.compile('symbolic link created for .+ <<==>> .+')
 
 
 # Private function to create link on nt-based systems
 def _link_windows(src, dest):
-	stdout = str(subprocess.check_output(['cmd', '/C', 'mklink', '/H', dest, src], stderr=subprocess.STDOUT))
+	try:
+		stdout = subprocess.check_output(
+			['cmd', '/C', 'mklink', '/H', dest, src], 
+			stderr=subprocess.STDOUT).decode('utf-8')
+	except CalledProcessError as err:
+		raise IOError(err.output.decode('utf-8'))
 	
 	# TODO, find out what kind of messages Windows sends us from mklink
-	logger.info(stdout)
-	if not _hardlinkRegex.match(stdout):
-		raise OSError(strerror=stdout)
+	# print(stdout)
+	# assume if they ret-coded 0 we're good
 
 
 def _symlink_windows(src, dest):
-	stdout = str(subprocess.check_output(['cmd', '/C', 'mklink', dest, src], stderr=subprocess.STDOUT))
+	try:
+		stdout = subprocess.check_output(
+			['cmd', '/C', 'mklink', dest, src], 
+			stderr=subprocess.STDOUT).decode('utf-8')
+	except CalledProcessError as err:
+		raise IOError(err.output.decode('utf-8'))
 
 	# TODO, find out what kind of messages Windows sends us from mklink
-	logger.info(stdout)
-
-	if not _symlinkRegex.match(stdout):
-		raise OSError(strerror=stdout)
+	# print(stdout)
+	# assume if they ret-coded 0 we're good
 
 
 # Create a hard link to src named as dest
