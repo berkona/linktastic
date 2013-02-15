@@ -29,9 +29,9 @@ import os
 # Private function to create link on nt-based systems
 def _link_windows(src, dest):
 	try:
-		stdout = subprocess.check_output(
+		subprocess.check_output(
 			['cmd', '/C', 'mklink', '/H', dest, src], 
-			stderr=subprocess.STDOUT).decode('utf-8')
+			stderr=subprocess.STDOUT)
 	except CalledProcessError as err:
 		raise IOError(err.output.decode('utf-8'))
 	
@@ -42,9 +42,9 @@ def _link_windows(src, dest):
 
 def _symlink_windows(src, dest):
 	try:
-		stdout = subprocess.check_output(
+		subprocess.check_output(
 			['cmd', '/C', 'mklink', dest, src], 
-			stderr=subprocess.STDOUT).decode('utf-8')
+			stderr=subprocess.STDOUT)
 	except CalledProcessError as err:
 		raise IOError(err.output.decode('utf-8'))
 
