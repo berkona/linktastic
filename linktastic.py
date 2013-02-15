@@ -35,7 +35,7 @@ _symlinkRegex = re.compile('symbolic link created for .+ <<==>> .+')
 
 # Private function to create link on nt-based systems
 def _link_windows(src, dest):
-	stdout = str(subprocess.check_output(['cmd', '/C', 'mklink', '/H', dest, src]))
+	stdout = str(subprocess.check_output(['cmd', '/C', 'mklink', '/H', dest, src], stderr=subprocess.STDOUT))
 	
 	# TODO, find out what kind of messages Windows sends us from mklink
 	logger.info(stdout)
@@ -44,7 +44,7 @@ def _link_windows(src, dest):
 
 
 def _symlink_windows(src, dest):
-	stdout = str(subprocess.check_output(['cmd', '/C', 'mklink', dest, src]))
+	stdout = str(subprocess.check_output(['cmd', '/C', 'mklink', dest, src], stderr=subprocess.STDOUT))
 
 	# TODO, find out what kind of messages Windows sends us from mklink
 	logger.info(stdout)
