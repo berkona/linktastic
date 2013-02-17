@@ -26,11 +26,16 @@ from subprocess import CalledProcessError
 import os
 
 
+# Prevent spaces from messing with us!
+def _escape_param(param):
+	return '"%s"' % param
+
+
 # Private function to create link on nt-based systems
 def _link_windows(src, dest):
 	try:
 		subprocess.check_output(
-			['cmd', '/C', 'mklink', '/H', dest, src],
+			['cmd', '/C', 'mklink', '/H', _escape_param(dest), _escape_param(src)],
 			stderr=subprocess.STDOUT)
 	except CalledProcessError as err:
 		raise IOError(err.output.decode('utf-8'))
@@ -43,7 +48,7 @@ def _link_windows(src, dest):
 def _symlink_windows(src, dest):
 	try:
 		subprocess.check_output(
-			['cmd', '/C', 'mklink', dest, src],
+			['cmd', '/C', 'mklink', _escape_param(dest), _escape_param(src)],
 			stderr=subprocess.STDOUT)
 	except CalledProcessError as err:
 		raise IOError(err.output.decode('utf-8'))
