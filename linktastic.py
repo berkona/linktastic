@@ -35,9 +35,10 @@ def _escape_param(param):
 def _link_windows(src, dest):
 	try:
 		subprocess.check_output(
-			['cmd', '/C', 'mklink', '/H', _escape_param(dest), _escape_param(src)],
+			'cmd /C mklink /H %s %s' % (_escape_param(dest), _escape_param(src)),
 			stderr=subprocess.STDOUT)
 	except CalledProcessError as err:
+
 		raise IOError(err.output.decode('utf-8'))
 
 	# TODO, find out what kind of messages Windows sends us from mklink
@@ -48,7 +49,7 @@ def _link_windows(src, dest):
 def _symlink_windows(src, dest):
 	try:
 		subprocess.check_output(
-			['cmd', '/C', 'mklink', _escape_param(dest), _escape_param(src)],
+			'cmd /C mklink %s %s' % (_escape_param(dest), _escape_param(src)),
 			stderr=subprocess.STDOUT)
 	except CalledProcessError as err:
 		raise IOError(err.output.decode('utf-8'))
